@@ -5,18 +5,18 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    map<string, Value> obj;
+    Object obj;
     
     obj["foo"] = true;
     obj["bar"] = 1;
     
-    map<string, Value> o;
+    Object o;
     o["failure"] = true;
     o["success"] = "no way";
     
     obj["baz"] = o;
         
-    vector<Value> a;
+    Array a;
     a.push_back(Value(true));
     a.push_back(Value("iajsia"));
     a.push_back(Value("asas"));
