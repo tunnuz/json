@@ -1,7 +1,6 @@
 %option noyywrap yylineno nodefault
 %{
     #include <iostream>
-    using namespace std;
 
     extern "C" 
     {
@@ -26,6 +25,6 @@
 [ \t]                   { }
 [-+]?[0-9]+             { yylval.int_v = atoi(yytext); return NUMBER_I; }
 [-+]?[0-9]*\.?[0-9]*    { yylval.float_v = atof(yytext); return NUMBER_F; }
-true|false              { yylval.bool_v = (string(yytext) == "true" ? true : false); return BOOL; }
+true|false              { yylval.bool_v = (std::string(yytext) == "true" ? true : false); return BOOLEAN; }
 .                       { printf("Unrecognized: ", yytext); }
 %%
