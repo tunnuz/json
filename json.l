@@ -1,14 +1,13 @@
 %option noyywrap yylineno nodefault
 %{
-    #include <iostream>
-
+    // Provided externally
     extern "C" 
     {
         int yylex();
-    } 
+    }
     
+    // Needed for the tokens
     #include "json.tab.h"
-
 %}
 
 %%
@@ -25,6 +24,19 @@
 [ \t]                   { }
 [-+]?[0-9]+             { yylval.int_v = atoi(yytext); return NUMBER_I; }
 [-+]?[0-9]*\.?[0-9]*    { yylval.float_v = atof(yytext); return NUMBER_F; }
-true|false              { yylval.bool_v = (std::string(yytext) == "true" ? true : false); return BOOLEAN; }
+true|false              { yylval.bool_v = ( strcmp(yytext, "true") == 0 ? true : false); return BOOLEAN; }
 .                       {  }
+
 %%
+
+/** Sets the input string to the lexer */
+void load_string(const char* str)
+{
+    yy_switch_to_buffer(yy_scan_string(str));
+}
+
+/** Sets the input file to the lexer */
+void load_file(FILE* file)
+{
+    yyrestart(file);
+}

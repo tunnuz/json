@@ -83,9 +83,7 @@ public:
     Value(const bool& b);
     
     Value(const std::string& s);
-    
-    Value(const char* s);
-    
+        
     Value(const Object& o);
     
     Value(const Array& o);

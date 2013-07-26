@@ -1,15 +1,22 @@
 %{
 
     #include <iostream>
+    #include <cstring>
     #include "json.hh"
     
     extern "C" 
     {
         void yyerror(const char *);
         int yylex();
+        
     } 
     
     #include "json.hh"
+    
+    void load_string(const char *);
+    void load_file(FILE*);
+    
+    Value* parsd = nullptr;
 %}
 
 %code requires { #include "json.hh" }
@@ -44,7 +51,24 @@
 %type <array_p> array list
 %type <value_p> value
 
+%start json
+
 %%
+
+// Entry point (every JSON file represents a value)
+json: value { parsd = $1; } ;
+
+object: CURLY_BRACKET_L assignment_list CURLY_BRACKET_R 
+    { 
+        $$ = $2;
+    }
+    ;
+
+array : SQUARE_BRACKET_L list SQUARE_BRACKET_R
+    {
+        $$ = $2;
+    }
+    ;
 
 value : NUMBER_I 
     { 
@@ -60,7 +84,7 @@ value : NUMBER_I
     }
     | string 
     { 
-        $$ = new Value($1);     
+        $$ = new Value(std::string($1));     
     }
     | object 
     { 
@@ -74,13 +98,25 @@ value : NUMBER_I
     
 string : DOUBLE_QUOTED_STRING 
     {
+        // Trim string
         std::string s($1);
-        $$ = const_cast<char*>(s.substr(1, s.length()-2).c_str());
+        s = s.substr(1, s.length()-2);
+        
+        char* t = new char[s.length()+1];
+        strcpy(t, s.c_str());
+
+        $$ = t;
     } 
     | SINGLE_QUOTED_STRING
     {
+        // Trim string
         std::string s($1);
-        $$ = const_cast<char*>(s.substr(1, s.length()-2).c_str());
+        s = s.substr(1, s.length()-2);
+        
+        char* t = new char[s.length()+1];
+        strcpy(t, s.c_str());
+
+        $$ = t;
     };
 
 assignment_list:
@@ -113,25 +149,23 @@ list:
     }
     ;
     
-object: CURLY_BRACKET_L assignment_list CURLY_BRACKET_R 
-    { 
-        $$ = $2;
-    }
-    ;
-
-array : SQUARE_BRACKET_L list SQUARE_BRACKET_R
-    {
-        $$ = $2;
-    }
-    ;
-
 %%
 
 int main(int argc, char **argv)
 {
-    int t = yyparse();
-    std::cerr << t << std::endl;
+    FILE* in = fopen(argv[1], "r");
+    
+    load_file(in);
+    
+    int status = yyparse();
+    
+    // If parsing went wrong delete the object constructed so far
+    if (status)
+        delete parsd;
+    
+    std::cerr << *parsd << std::endl;
 }
+
 
 void yyerror(const char *s)
 {

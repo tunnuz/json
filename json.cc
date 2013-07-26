@@ -12,8 +12,6 @@ Value::Value(const bool& b) : bool_v(b), type_t(BOOL) { }
 
 Value::Value(const std::string& s) : string_v(s), type_t(STRING) { }
 
-Value::Value(const char* s) : string_v(s), type_t(STRING) { }
-
 Value::Value(const Object& o) : object_v(o), type_t(OBJECT) { }
 
 Value::Value(const Array& o) : array_v(o), type_t(ARRAY) { }
