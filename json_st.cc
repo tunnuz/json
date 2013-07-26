@@ -1,4 +1,4 @@
-#include "json.hh"
+#include "json_st.hh"
 
 using namespace std;
 
@@ -17,6 +17,12 @@ Value::Value(const Object& o) : object_v(o), type_t(OBJECT) { }
 Value::Value(const Array& o) : array_v(o), type_t(ARRAY) { }
 
 Object::Object() { }
+
+Object::~Object()
+{
+    for (auto p : _object)
+        delete p;
+}
 
 Object::Object(const Object& o) : _object(o._object) { }
 
