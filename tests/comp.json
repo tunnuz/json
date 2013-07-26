@@ -1,0 +1,89 @@
+{
+    "type": "and",
+    "postprocessors": [
+        {
+            "type": "hammersley",
+            "points": 16
+        },
+	{
+            "type": "rounding",
+            "round": {
+                "temperature": 0,
+                "neighbors-accepted": 0
+            }
+	} 
+    ],
+    "descendants": [
+        {
+            "type": "directory",
+            "name": "instance",
+            "path": "../instances/comp",
+            "match": ".*\\.ectt"
+        },
+        {
+            "type": "discrete",
+            "name": "init-free-variables",
+            "values": [ 2 ]
+        },
+        {
+            "type": "discrete",
+            "name": "max-free-variables",
+            "values": [ 0.05 ]
+        },
+        {
+            "type": "discrete",
+            "name": "max-idle-iterations",
+            "values": [ 200 ] 
+        },
+        {
+            "type": "discrete",
+            "name": "ms-per-variable",
+            "values": [ 10 ]
+        },
+        {
+            "type": "discrete",
+            "name": "random-relaxation",
+            "values": [ 0.05 ]
+        },
+        {
+            "type": "discrete",
+            "name": "min-temperature",
+            "values": [ 0.04 ]
+        },
+        {
+            "type": "discrete",
+            "name": "delta-probability",
+            "values": [ 0.05 ]
+        },
+        {
+            "type": "discrete",
+            "name": "cooling-rate",
+            "values": [ 0.98 ]
+        },
+        {
+            "type": "continuous",
+            "values": { "min": 1, "max": 50 },
+            "name": "neighbors-accepted"
+        },
+        {
+            "type": "continuous",
+            "values": { "min": 0.05, "max": 100 },
+            "name": "temperature"
+        },
+	{
+            "type": "discrete",
+            "name": "random-branching",
+            "values": [ "random" ]
+        },
+        {
+            "type": "discrete",
+            "name": "time",
+            "values": [ 400000 ]
+        },
+        {
+            "type": "discrete",
+            "name": "model",
+            "values": [ "experiments" ]
+        }
+    ]
+}

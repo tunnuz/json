@@ -25,7 +25,7 @@
 [-+]?[0-9]+             { yylval.int_v = atoi(yytext); return NUMBER_I; }
 [-+]?[0-9]*\.?[0-9]*    { yylval.float_v = atof(yytext); return NUMBER_F; }
 true|false              { yylval.bool_v = ( strcmp(yytext, "true") == 0 ? true : false); return BOOLEAN; }
-null                    { yylval.null_p = true; return NULL; }
+null                    { return NULL_T; }
 .                       {  }
 
 %%

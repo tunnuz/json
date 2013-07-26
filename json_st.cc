@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Value::Value() {}
+Value::Value() : type_t(NIL) {}
 
 Value::Value(const int& i) : int_v(i), type_t(INT) { }
 
@@ -18,11 +18,7 @@ Value::Value(const Array& o) : array_v(o), type_t(ARRAY) { }
 
 Object::Object() { }
 
-Object::~Object()
-{
-    for (auto p : _object)
-        delete p;
-}
+Object::~Object() { }
 
 Object::Object(const Object& o) : _object(o._object) { }
 
@@ -58,12 +54,20 @@ size_t Object::size() const
 
 Array::Array() { }
 
-Array::Array(const Array& o)
+Array::~Array() { }
+
+Array::Array(const Array& a)
 {
-    _array = o._array;
+    _array = a._array;
 }
 
-Value& Array::operator[] (const int i)
+Array& Array::operator=(const Array& a)
+{
+    _array = a._array;
+}
+
+
+Value& Array::operator[] (size_t i)
 {
     return _array[i];
 }
@@ -88,42 +92,6 @@ void Array::push_back(const Value& v)
     _array.push_back(v);
 }
 
-Value& Value::operator=(const Value& e)
-{
-    
-    type_t = e.type();
-    
-    switch (type_t)
-    {
-        case INT:
-        int_v = e.int_v;
-        break;
-
-        case FLOAT:
-        float_v = e.float_v;
-        break;
-
-        case BOOL:
-        bool_v = e.bool_v;
-        break;
-
-        case STRING:
-        string_v = e.string_v;
-        break;
-
-        case OBJECT:
-        object_v = e.object_v;
-        break;
-
-        case ARRAY:
-        array_v = e.array_v;
-        break;                
-    }
-
-    return *this;
-}
-
-
 void indent(ostream& os)
 {
     for (unsigned int i  = 0; i < ind; i++)
@@ -137,29 +105,33 @@ ostream& operator<<(ostream& os, const Value& v)
         /** Base types */
         
         case INT:
-        os << v.int_v;
+        os << (int)v;
         break;
         
         case FLOAT:
-        os << v.float_v;
+        os << (float)v;
         break;
         
         case BOOL:
-        os << (v.bool_v ? "true" : "false");
+        os << ((bool)v ? "true" : "false");
+        break;
+        
+        case NIL:
+        os << "null";
         break;
         
         case STRING:
-        os << '"' << v.string_v << '"';                
+        os << '"' << (string)v << '"';                
         break;
         
         /** Compound types */
         
         case ARRAY:
-        os << v.array_v;                
+        os << (Array)v;                
         break;
         
         case OBJECT:
-        os << v.object_v;                
+        os << (Object)v;                
         break;
         
     }
@@ -190,7 +162,7 @@ std::ostream& operator<<(ostream& os, const Array& a)
     for (auto e = a.begin(); e != a.end();)
     {
         indent(os);
-        os << *e;
+        os << (*e);
         if (++e != a.end())
             os << ",";
         os << endl;
