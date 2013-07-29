@@ -5,10 +5,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    // Load JSON file
+    Value v = parse_file("tests/comp.json");    
+    cerr << v << endl;
+    cerr << "---" << endl;
+    
+    // Build object programmatically
     Object obj;
     
     obj["foo"] = true;
-    obj["bar"] = 1;
+    obj["bar"] = 3;
     
     Object o;
     o["failure"] = true;
@@ -17,14 +23,14 @@ int main(int argc, char** argv)
     obj["baz"] = o;
         
     Array a;
-    a.push_back(Value(true));
-    a.push_back(Value("iajsia"));
-    a.push_back(Value("asas"));
-    a.push_back(Value(55));
+    a.push_back(true);
+    a.push_back("asia");
+    a.push_back("europa");
+    a.push_back(55);
     
     obj["beer"] = a;
 
     cerr << obj << endl;
-    
+        
     return 0;
 }

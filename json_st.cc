@@ -2,19 +2,205 @@
 
 using namespace std;
 
-Value::Value() : type_t(NIL) {}
+Value::Value() : type_t(NIL) { }
 
-Value::Value(const int& i) : int_v(i), type_t(INT) { }
+Value::Value(const int i) : int_v(i), type_t(INT) { }
 
-Value::Value(const float& f) : float_v(f), type_t(FLOAT) { }
+Value::Value(const float f) : float_v(f), type_t(FLOAT) { }
 
-Value::Value(const bool& b) : bool_v(b), type_t(BOOL) { }
+Value::Value(const bool b) : bool_v(b), type_t(BOOL) { }
 
-Value::Value(const std::string& s) : string_v(s), type_t(STRING) { }
+Value::Value(const char* s) : string_v(s), type_t(STRING) { }
+
+Value::Value(const string& s) : string_v(s), type_t(STRING) { }
 
 Value::Value(const Object& o) : object_v(o), type_t(OBJECT) { }
 
 Value::Value(const Array& o) : array_v(o), type_t(ARRAY) { }
+
+Value::Value(const string&& s) : string_v(move(s)), type_t(STRING) { }
+
+Value::Value(const Object&& o) : object_v(move(o)), type_t(OBJECT) { }
+
+Value::Value(const Array&& o) : array_v(move(o)), type_t(ARRAY) { }
+
+Value::Value(const Value& v)
+{ 
+    switch(v.type())
+    {
+        /** Base types */
+        case INT:
+            int_v = v.int_v;
+            type_t = INT;
+            break;
+        
+        case FLOAT:
+            float_v = v.float_v;
+            type_t = FLOAT;
+            break;
+        
+        case BOOL:
+            bool_v = v.bool_v;
+            type_t = BOOL;
+            break;
+        
+        case NIL:
+            type_t = NIL;
+            break;
+        
+        case STRING:
+            string_v = v.string_v;
+            type_t = STRING;
+            break;
+        
+        /** Compound types */
+            case ARRAY:
+            array_v = v.array_v;
+            type_t = ARRAY;
+            break;
+        
+        case OBJECT:
+            object_v = v.object_v;
+            type_t = OBJECT;
+            break;
+        
+    }
+}
+
+Value::Value(const Value&& v)
+{ 
+    switch(v.type())
+    {
+        /** Base types */
+        case INT:
+            int_v = v.int_v;
+            type_t = INT;
+            break;
+        
+        case FLOAT:
+            float_v = v.float_v;
+            type_t = FLOAT;
+            break;
+        
+        case BOOL:
+            bool_v = v.bool_v;
+            type_t = BOOL;
+            break;
+        
+        case NIL:
+            type_t = NIL;
+            break;
+        
+        case STRING:
+            string_v = move(v.string_v);
+            type_t = STRING;
+            break;
+        
+        /** Compound types */
+            case ARRAY:
+            array_v = move(v.array_v);
+            type_t = ARRAY;
+            break;
+        
+        case OBJECT:
+            object_v = move(v.object_v);
+            type_t = OBJECT;
+            break;
+        
+    }
+}
+
+Value& Value::operator=(const Value& v)
+{
+    switch(v.type())
+    {
+        /** Base types */
+        case INT:
+            int_v = v.int_v;
+            type_t = INT;
+            break;
+        
+        case FLOAT:
+            float_v = v.float_v;
+            type_t = FLOAT;
+            break;
+        
+        case BOOL:
+            bool_v = v.bool_v;
+            type_t = BOOL;
+            break;
+        
+        case NIL:
+            type_t = NIL;
+            break;
+        
+        case STRING:
+            string_v = v.string_v;
+            type_t = STRING;
+            break;
+        
+        /** Compound types */
+            case ARRAY:
+            array_v = v.array_v;
+            type_t = ARRAY;
+            break;
+        
+        case OBJECT:
+            object_v = v.object_v;
+            type_t = OBJECT;
+            break;
+        
+    }
+    
+    return *this;
+
+}
+
+Value& Value::operator=(const Value&& v)
+{
+    switch(v.type())
+    {
+        /** Base types */
+        case INT:
+            int_v = v.int_v;
+            type_t = INT;
+            break;
+        
+        case FLOAT:
+            float_v = v.float_v;
+            type_t = FLOAT;
+            break;
+        
+        case BOOL:
+            bool_v = v.bool_v;
+            type_t = BOOL;
+            break;
+        
+        case NIL:
+            type_t = NIL;
+            break;
+        
+        case STRING:
+            string_v = move(v.string_v);
+            type_t = STRING;
+            break;
+        
+        /** Compound types */
+            case ARRAY:
+            array_v = move(v.array_v);
+            type_t = ARRAY;
+            break;
+        
+        case OBJECT:
+            object_v = move(v.object_v);
+            type_t = OBJECT;
+            break;
+        
+    }
+    
+    return *this;
+
+}
 
 Object::Object() { }
 
@@ -22,27 +208,36 @@ Object::~Object() { }
 
 Object::Object(const Object& o) : _object(o._object) { }
 
+Object::Object(const Object&& o) : _object(move(o._object)) { }
+
 Object& Object::operator=(const Object& o)
 {
     _object = o._object;
+    return *this;
 }
 
-Value& Object::operator[] (const std::string& key)
+Object& Object::operator=(const Object&& o)
+{
+    _object = move(o._object);
+    return *this;
+}
+
+Value& Object::operator[] (const string& key)
 {
     return _object[key];
 }
 
-std::pair<std::map<std::string, Value>::iterator, bool> Object::insert(const std::pair<std::string, Value>& v)
+pair<map<string, Value>::iterator, bool> Object::insert(const pair<string, Value>& v)
 {
     return _object.insert(v);
 }
 
-std::map<std::string, Value>::const_iterator Object::begin() const
+map<string, Value>::const_iterator Object::begin() const
 {
     return _object.begin();
 }
 
-std::map<std::string, Value>::const_iterator Object::end() const
+map<string, Value>::const_iterator Object::end() const
 {
     return _object.end();
 }
@@ -56,14 +251,20 @@ Array::Array() { }
 
 Array::~Array() { }
 
-Array::Array(const Array& a)
-{
-    _array = a._array;
-}
+Array::Array(const Array& a) : _array(a._array) { }
+
+Array::Array(const Array&& a) : _array(move(a._array)) { }
 
 Array& Array::operator=(const Array& a)
 {
     _array = a._array;
+    return *this;
+}
+
+Array& Array::operator=(const Array&& a)
+{
+    _array = move(a._array);
+    return *this;
 }
 
 
@@ -72,12 +273,12 @@ Value& Array::operator[] (size_t i)
     return _array[i];
 }
 
-std::vector<Value>::const_iterator Array::begin() const
+vector<Value>::const_iterator Array::begin() const
 {
     return _array.begin();
 }
 
-std::vector<Value>::const_iterator Array::end() const
+vector<Value>::const_iterator Array::end() const
 {
     return _array.end();
 }
@@ -103,42 +304,40 @@ ostream& operator<<(ostream& os, const Value& v)
     switch(v.type())
     {
         /** Base types */
-        
         case INT:
-        os << (int)v;
-        break;
+            os << (int)v;
+            break;
         
         case FLOAT:
-        os << (float)v;
-        break;
+            os << (float)v;
+            break;
         
         case BOOL:
-        os << ((bool)v ? "true" : "false");
-        break;
+            os << ((bool)v ? "true" : "false");
+            break;
         
         case NIL:
-        os << "null";
-        break;
+            os << "null";
+            break;
         
         case STRING:
-        os << '"' << (string)v << '"';                
-        break;
+            os << '"' << (string)v << '"';                
+            break;
         
         /** Compound types */
-        
         case ARRAY:
-        os << (Array)v;                
-        break;
+            os << (Array)v;                
+            break;
         
         case OBJECT:
-        os << (Object)v;                
-        break;
+            os << (Object)v;                
+            break;
         
     }
     return os;
 }
 
-std::ostream& operator<<(ostream& os, const Object& o)
+ostream& operator<<(ostream& os, const Object& o)
 {    
     os << "{" << endl;
     ind++;
@@ -155,7 +354,7 @@ std::ostream& operator<<(ostream& os, const Object& o)
     os << "}";
 }
 
-std::ostream& operator<<(ostream& os, const Array& a)
+ostream& operator<<(ostream& os, const Array& a)
 {
     os << "[" << endl;
     ind++;

@@ -36,10 +36,18 @@ public:
     */
     Object(const Object& o);
     
+    /** Move constructor. */
+    Object(const Object&& o);
+    
     /** Assignment operator. 
         @param o object to copy from
     */
     Object& operator=(const Object& o);
+    
+    /** Move operator. 
+        @param o object to copy from
+    */
+    Object& operator=(const Object&& o);
     
     /** Destructor. */
     ~Object();
@@ -101,6 +109,16 @@ public:
         @param a array to copy from
     */
     Array& operator=(const Array& a);
+    
+    /** Copy constructor. 
+        @param o the object to copy from
+    */
+    Array(const Array&& a);
+
+    /** Assignment operator. 
+        @param a array to copy from
+    */
+    Array& operator=(const Array&& a);
 
     /** Subscript operator, access an element by index. 
         @param i index of the element to access
@@ -146,28 +164,53 @@ public:
     /** Default constructor (type = NIL). */
     Value();
     
+    /** Copy constructor. */
+    Value(const Value& v);
+    
     /** Constructor from int. */
-    Value(const int& i);
+    Value(const int i);
     
     /** Constructor from float. */
-    Value(const float& f);
+    Value(const float f);
     
     /** Constructor from bool. */
-    Value(const bool& b);
+    Value(const bool b);
     
-    /** Constructor from pointer to char (C-string)  */
+    /** Constructor from pointer to char (C-string).  */
+    Value(const char* s);
+
+    /** Constructor from STD string  */
     Value(const std::string& s);
     
-    /** Constructor from pointer to Object */
+    /** Constructor from pointer to Object. */
     Value(const Object& o);
     
-    /** Constructor from pointer to Array */
+    /** Constructor from pointer to Array. */
     Value(const Array& a);
     
+    /** Move constructor. */
+    Value(const Value&& v);
+    
+    /** Move constructor from STD string  */
+    Value(const std::string&& s);
+    
+    /** Move constructor from pointer to Object. */
+    Value(const Object&& o);
+    
+    /** Move constructor from pointer to Array. */
+    Value(const Array&& a);
+    
+    /** Type query. */
     ValueType type() const
     {
         return type_t;
     }
+    
+    /** Assignment operator. */
+    Value& operator=(const Value& v);
+    
+    /** Move operator. */
+    Value& operator=(const Value&& v);
     
     /** Cast operator for float */
     operator float() const { return float_v; }

@@ -13,18 +13,13 @@ A Flex/Bison JSON parser for C++.
 	int main(int argc, char** argv)
 	{
 		// Read JSON from a string
-		Value* v = parse_string(<your_json_string>);
+		Value v = parse_string(<your_json_string>);
+		cout << v << endl;
         
-        // Do something with v ...
-        
-        delete v;
-		
-		// Read JSON from a file
+        // Read JSON from a file
 		v = parse_file("<your_json_file>.json");
+		cout << v << endl;
 		
-		cout << "JSON file contains: " << *v << endl;
-		
-        delete v;
 		return 0;
 	}
 

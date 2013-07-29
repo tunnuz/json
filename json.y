@@ -2,18 +2,17 @@
 
     #include <iostream>
     #include <cstring>
+    #include <stdexcept>
     #include "json_st.hh"
     
     extern "C" 
     {
         void yyerror(const char *);
         int yylex();
-        
     } 
         
     void load_string(const char *);
     void load_file(FILE*);
-    
     Value* parsd = nullptr;
 %}
 
@@ -33,7 +32,6 @@
     Array* array_p;
     Value* value_p;
 } 
-
 
 /** Define types for union values */
 %type<string_v> DOUBLE_QUOTED_STRING SINGLE_QUOTED_STRING string
@@ -72,9 +70,9 @@ value : NUMBER_I { $$ = new Value($1); }
     | NUMBER_F { $$ = new Value($1); }
     | BOOLEAN { $$ = new Value($1); }
     | NULL_T { $$ = new Value(); }
-    | string { $$ = new Value(std::string($1)); delete $1; }
-    | object { $$ = new Value(*$1); delete $1; }
-    | array { $$ = new Value(*$1); delete $1; }
+    | string { $$ = new Value(std::move(std::string($1))); delete $1; }
+    | object { $$ = new Value(std::move(*$1)); delete $1; }
+    | array { $$ = new Value(std::move(*$1)); delete $1; }
     ;
 
 // String rule
@@ -99,12 +97,12 @@ string : DOUBLE_QUOTED_STRING {
 assignment_list: /* empty */ { $$ = new Object(); } 
     | string COLON value {
         $$ = new Object();
-        $$->insert(std::make_pair(std::string($1), *$3));
+        $$->insert(std::make_pair(std::string($1), std::move(*$3)));
         delete $1;
         delete $3;
     } 
     | assignment_list COMMA string COLON value { 
-        $$->insert(std::make_pair(std::string($3), *$5));
+        $$->insert(std::make_pair(std::string($3), std::move(*$5)));
         delete $3;
         delete $5;
     }
@@ -114,39 +112,57 @@ assignment_list: /* empty */ { $$ = new Object(); }
 list: /* empty */ { $$ = new Array(); }
     | value {
         $$ = new Array();
-        $$->push_back(*$1);
+        $$->push_back(std::move(*$1));
         delete $1;
     }
     | list COMMA value { 
-        $$->push_back(*$3); 
+        $$->push_back(std::move(*$3)); 
         delete $3;
     }
     ;
     
 %%
 
-int main(int argc, char **argv)
-{
-    int status = 1;
+Value parse_file(const char* filename)
+{    
+    FILE* fh = fopen(filename, "r");
+    Value v;
     
-    if (argc > 1)
+    if (fh)
     {
-    
-        FILE* in = fopen(argv[1], "r");
-    
-        load_file(in);
-    
-        status = yyparse();
-    }
+        load_file(fh);
+        int status = yyparse();
+        
+        if (status)
+            throw std::runtime_error("Error parsing file: JSON syntax.");
+        else
+            v = *parsd;
+        
+        delete parsd;
+    } 
     else
-        status = yyparse();
+        throw std::runtime_error("Impossible to open file.");
+
+    return v;
+}
+
+Value parse_string(const std::string& s)
+{
+    load_string(s.c_str());
+    
+    int status = yyparse();
     
     if (status)
+    {
+        throw std::runtime_error("Error parsing file: JSON syntax.");
         delete parsd;
-    
-    std::cerr << *parsd << std::endl;
-    
-    delete parsd;
+    }
+    else
+    {
+        Value v = *parsd;
+        delete parsd;
+        return v;    
+    }
 }
 
 void yyerror(const char *s)

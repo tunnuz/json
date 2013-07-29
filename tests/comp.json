@@ -78,7 +78,7 @@
         {
             "type": "discrete",
             "name": "time",
-            "values": [ 400000 ]
+            "values": [ 4.3E+5 ]
         },
         {
             "type": "discrete",
