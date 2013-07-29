@@ -1,6 +1,7 @@
 #include "json_st.hh"
 
 using namespace std;
+using namespace JSON;
 
 Value::Value() : type_t(NIL) { }
 
@@ -293,7 +294,7 @@ void Array::push_back(const Value& v)
     _array.push_back(v);
 }
 
-void indent(ostream& os)
+void JSON::indent(ostream& os)
 {
     for (unsigned int i  = 0; i < ind; i++)
         os << "\t";
@@ -343,14 +344,14 @@ ostream& operator<<(ostream& os, const Object& o)
     ind++;
     for (auto e = o.begin(); e != o.end();)
     {
-        indent(os);
+        JSON::indent(os);
         os << '"' << e->first << '"' << ": " << e->second;
         if (++e != o.end())
             os << ",";
         os << endl;
     }    
     ind--;
-    indent(os);
+    JSON::indent(os);
     os << "}";
 }
 
@@ -360,13 +361,13 @@ ostream& operator<<(ostream& os, const Array& a)
     ind++;
     for (auto e = a.begin(); e != a.end();)
     {
-        indent(os);
+        JSON::indent(os);
         os << (*e);
         if (++e != a.end())
             os << ",";
         os << endl;
     }    
     ind--;
-    indent(os);
+    JSON::indent(os);
     os << "]";
 }

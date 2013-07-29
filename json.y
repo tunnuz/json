@@ -13,7 +13,7 @@
         
     void load_string(const char *);
     void load_file(FILE*);
-    Value* parsd = nullptr;
+    JSON::Value* parsd = nullptr;
 %}
 
 %code requires { #include "json_st.hh" }
@@ -28,9 +28,9 @@
     char* string_v;
     
     // Pointers to more complex classes
-    Object* object_p;
-    Array* array_p;
-    Value* value_p;
+    JSON::Object* object_p;
+    JSON::Array* array_p;
+    JSON::Value* value_p;
 } 
 
 /** Define types for union values */
@@ -66,13 +66,13 @@ object: CURLY_BRACKET_L assignment_list CURLY_BRACKET_R { $$ = $2; } ;
 array : SQUARE_BRACKET_L list SQUARE_BRACKET_R { $$ = $2; } ;
 
 // Values rule
-value : NUMBER_I { $$ = new Value($1); }
-    | NUMBER_F { $$ = new Value($1); }
-    | BOOLEAN { $$ = new Value($1); }
-    | NULL_T { $$ = new Value(); }
-    | string { $$ = new Value(std::move(std::string($1))); delete $1; }
-    | object { $$ = new Value(std::move(*$1)); delete $1; }
-    | array { $$ = new Value(std::move(*$1)); delete $1; }
+value : NUMBER_I { $$ = new JSON::Value($1); }
+    | NUMBER_F { $$ = new JSON::Value($1); }
+    | BOOLEAN { $$ = new JSON::Value($1); }
+    | NULL_T { $$ = new JSON::Value(); }
+    | string { $$ = new JSON::Value(std::move(std::string($1))); delete $1; }
+    | object { $$ = new JSON::Value(std::move(*$1)); delete $1; }
+    | array { $$ = new JSON::Value(std::move(*$1)); delete $1; }
     ;
 
 // String rule
@@ -94,9 +94,9 @@ string : DOUBLE_QUOTED_STRING {
     };
 
 // Assignments rule
-assignment_list: /* empty */ { $$ = new Object(); } 
+assignment_list: /* empty */ { $$ = new JSON::Object(); } 
     | string COLON value {
-        $$ = new Object();
+        $$ = new JSON::Object();
         $$->insert(std::make_pair(std::string($1), std::move(*$3)));
         delete $1;
         delete $3;
@@ -109,9 +109,9 @@ assignment_list: /* empty */ { $$ = new Object(); }
     ;
     
 // List rule
-list: /* empty */ { $$ = new Array(); }
+list: /* empty */ { $$ = new JSON::Array(); }
     | value {
-        $$ = new Array();
+        $$ = new JSON::Array();
         $$->push_back(std::move(*$1));
         delete $1;
     }
@@ -123,10 +123,10 @@ list: /* empty */ { $$ = new Array(); }
     
 %%
 
-Value parse_file(const char* filename)
+JSON::Value parse_file(const char* filename)
 {    
     FILE* fh = fopen(filename, "r");
-    Value v;
+    JSON::Value v;
     
     if (fh)
     {
@@ -146,7 +146,7 @@ Value parse_file(const char* filename)
     return v;
 }
 
-Value parse_string(const std::string& s)
+JSON::Value parse_string(const std::string& s)
 {
     load_string(s.c_str());
     
@@ -159,7 +159,7 @@ Value parse_string(const std::string& s)
     }
     else
     {
-        Value v = *parsd;
+        JSON::Value v = *parsd;
         delete parsd;
         return v;    
     }

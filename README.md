@@ -1,6 +1,6 @@
 # JSON++
 
-A Flex/Bison JSON parser for C++.
+A Flex/Bison JSON parser for C++11. Parses strings and files in JSON format, and builds an in-memory tree representing the JSON structure. JSON objects are mapped to `std::map`s, arrays to `std::vector`s, JSON native types are mapped onto C++ native types. The library also includes printing on streams. Classes exploit move semantics to avoid copying parsed structures around.
 
 ## Usage
 
@@ -20,7 +20,29 @@ A Flex/Bison JSON parser for C++.
 		v = parse_file("<your_json_file>.json");
 		cout << v << endl;
 		
-		return 0;
+        // Or build the object manually
+        Object obj;
+    
+        obj["foo"] = true;
+        obj["bar"] = 3;
+    
+        Object o;
+        o["given_name"] = "John";
+        o["family_name"] = "Boags";
+    
+        obj["baz"] = o;
+        
+        Array a;
+        a.push_back(true);
+        a.push_back("asia");
+        a.push_back("europe");
+        a.push_back(55);
+    
+        obj["test"] = a;
+        
+		cout << o << endl;
+        
+        return 0;
 	}
 
 ## How to build JSON++

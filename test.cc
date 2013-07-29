@@ -2,6 +2,7 @@
 #include "json.hh"
 
 using namespace std;
+using namespace JSON;
 
 int main(int argc, char** argv)
 {
