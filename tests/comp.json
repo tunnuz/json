@@ -5,13 +5,18 @@
             "type": "hammersley",
             "points": 16
         },
-	{
+	    {
             "type": "rounding",
             "round": {
                 "temperature": 0,
                 "neighbors-accepted": 0
             }
-	} 
+	    },
+        {
+            "test": { "alpha": 1 }
+            
+        }
+    
     ],
     "descendants": [
         {

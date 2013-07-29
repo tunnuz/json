@@ -353,6 +353,8 @@ ostream& operator<<(ostream& os, const Object& o)
     ind--;
     JSON::indent(os);
     os << "}";
+    
+    return os;
 }
 
 ostream& operator<<(ostream& os, const Array& a)
@@ -370,4 +372,6 @@ ostream& operator<<(ostream& os, const Array& a)
     ind--;
     JSON::indent(os);
     os << "]";
+    
+    return os;
 }

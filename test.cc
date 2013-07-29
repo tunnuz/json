@@ -7,6 +7,7 @@ using namespace JSON;
 int main(int argc, char** argv)
 {
     // Load JSON file
+    
     Value v = parse_file("tests/comp.json");    
     cerr << v << endl;
     cerr << "---" << endl;
@@ -22,7 +23,7 @@ int main(int argc, char** argv)
     o["success"] = "no way";
     
     obj["baz"] = o;
-        
+    
     Array a;
     a.push_back(true);
     a.push_back("asia");
@@ -32,6 +33,6 @@ int main(int argc, char** argv)
     obj["beer"] = a;
 
     cerr << obj << endl;
-        
+    
     return 0;
 }
