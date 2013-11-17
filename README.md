@@ -1,6 +1,6 @@
 # JSON++
 
-JSON++ is a **self contained** Flex/Bison JSON parser for C++11. It parses strings and files in JSON format, and builds an in-memory tree representing the JSON structure. JSON objects are mapped to `std::map`s, arrays to `std::vector`s, JSON native types are mapped onto C++ native types. The library also includes printing on streams. Classes exploit move semantics to avoid copying parsed structures around. It doesn't require any additional library (not even `libfl`).
+JSON\+\+ is a **self contained** Flex/Bison JSON parser for C\+\+11. It parses strings and files in JSON format, and builds an in-memory tree representing the JSON structure. JSON objects are mapped to `std::map`s, arrays to `std::vector`s, JSON native types are mapped onto C++ native types. The library also includes printing on streams. Classes exploit move semantics to avoid copying parsed structures around. It doesn't require any additional library (not even `libfl`).
 
 ## Usage
 
@@ -61,7 +61,7 @@ files from `json.l` and `json.y`, then include everything in your build (togethe
 
 ## Flex/Bison quirks when using C++ classes
 
-This section is for the ones who got here because they're trying to build stuff with Flex/Bison and C++. This was my first Flex/Bison parser (the main motivation behind its development being that I didn't find a parser for JSON in C++ which didn't require a number of extra libraries, plus I wanted to learn Flex/Bison).
+This section is for the ones who got here because they're trying to build stuff with Flex/Bison and C\+\+. This was my first Flex/Bison parser (the main motivation behind its development being that I didn't find a parser for JSON in C\+\+ which didn't require a number of extra libraries, plus I wanted to learn Flex/Bison).
 
 So, for the ones venturing in this world, here's a few things I wish I knew when I set off to write the parser.
 

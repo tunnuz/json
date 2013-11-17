@@ -243,6 +243,16 @@ map<string, Value>::const_iterator Object::end() const
     return _object.end();
 }
 
+map<string, Value>::iterator Object::begin()
+{
+    return _object.begin();
+}
+
+map<string, Value>::iterator Object::end()
+{
+    return _object.end();
+}
+
 size_t Object::size() const
 {
     return _object.size();
@@ -280,6 +290,16 @@ vector<Value>::const_iterator Array::begin() const
 }
 
 vector<Value>::const_iterator Array::end() const
+{
+    return _array.end();
+}
+
+vector<Value>::iterator Array::begin()
+{
+    return _array.begin();
+}
+
+vector<Value>::iterator Array::end()
 {
     return _array.end();
 }

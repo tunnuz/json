@@ -2,6 +2,7 @@
 
     #include <iostream>
     #include <cstring>
+    #include <stdio.h>
     #include <stdexcept>
     #include "json_st.hh"
     

@@ -3,7 +3,7 @@
 all: test
 
 test: json_st.cc json_st.hh test.cc json.tab.c lex.yy.c
-	g++ -O3 -std=c++11 $^ -o $@	
+	g++ -O3 -std=gnu++11 $^ -o $@	
 
 json.tab.c: json.y
 	bison -d json.y
