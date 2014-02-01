@@ -7,7 +7,7 @@
     }
     
     // Needed for the tokens
-    #include "json.tab.h"
+    #include "json.tab.hh"
 %}
 
 %%
