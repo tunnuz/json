@@ -22,8 +22,8 @@
 %union
 {
     // "Pure" types
-    int int_v;
-    float float_v;
+    long long int int_v;
+    long double float_v;
     bool bool_v;
     bool null_p;
     char* string_v;

@@ -5,9 +5,15 @@ using namespace JSON;
 
 Value::Value() : type_t(NIL) { }
 
-Value::Value(const int i) : int_v(i), type_t(INT) { }
+Value::Value(const long long int i) : int_v(i), type_t(INT) { }
 
-Value::Value(const float f) : float_v(f), type_t(FLOAT) { }
+Value::Value(const long int i) : int_v(static_cast<long long int>(i)), type_t(INT) { }
+
+Value::Value(const int i) : int_v(static_cast<int>(i)), type_t(INT) { }
+
+Value::Value(const long double f) : float_v(f), type_t(FLOAT) { }
+
+Value::Value(const double f) : float_v(static_cast<long double>(f)), type_t(FLOAT) { }
 
 Value::Value(const bool b) : bool_v(b), type_t(BOOL) { }
 
@@ -19,11 +25,11 @@ Value::Value(const Object& o) : object_v(o), type_t(OBJECT) { }
 
 Value::Value(const Array& o) : array_v(o), type_t(ARRAY) { }
 
-Value::Value(const string&& s) : string_v(move(s)), type_t(STRING) { }
+Value::Value(string&& s) : string_v(move(s)), type_t(STRING) { }
 
-Value::Value(const Object&& o) : object_v(move(o)), type_t(OBJECT) { }
+Value::Value(Object&& o) : object_v(move(o)), type_t(OBJECT) { }
 
-Value::Value(const Array&& o) : array_v(move(o)), type_t(ARRAY) { }
+Value::Value(Array&& o) : array_v(move(o)), type_t(ARRAY) { }
 
 Value::Value(const Value& v)
 { 
@@ -68,23 +74,23 @@ Value::Value(const Value& v)
     }
 }
 
-Value::Value(const Value&& v)
+Value::Value(Value&& v)
 { 
     switch(v.type())
     {
         /** Base types */
         case INT:
-            int_v = v.int_v;
+            int_v = move(v.int_v);
             type_t = INT;
             break;
         
         case FLOAT:
-            float_v = v.float_v;
+            float_v = move(v.float_v);
             type_t = FLOAT;
             break;
         
         case BOOL:
-            bool_v = v.bool_v;
+            bool_v = move(v.bool_v);
             type_t = BOOL;
             break;
         
@@ -157,23 +163,23 @@ Value& Value::operator=(const Value& v)
 
 }
 
-Value& Value::operator=(const Value&& v)
+Value& Value::operator=(Value&& v)
 {
     switch(v.type())
     {
         /** Base types */
         case INT:
-            int_v = v.int_v;
+            int_v = move(v.int_v);
             type_t = INT;
             break;
         
         case FLOAT:
-            float_v = v.float_v;
+            float_v = move(v.float_v);
             type_t = FLOAT;
             break;
         
         case BOOL:
-            bool_v = v.bool_v;
+            bool_v = move(v.bool_v);
             type_t = BOOL;
             break;
         
@@ -209,7 +215,7 @@ Object::~Object() { }
 
 Object::Object(const Object& o) : _object(o._object) { }
 
-Object::Object(const Object&& o) : _object(move(o._object)) { }
+Object::Object(Object&& o) : _object(move(o._object)) { }
 
 Object& Object::operator=(const Object& o)
 {
@@ -217,7 +223,7 @@ Object& Object::operator=(const Object& o)
     return *this;
 }
 
-Object& Object::operator=(const Object&& o)
+Object& Object::operator=(Object&& o)
 {
     _object = move(o._object);
     return *this;
@@ -264,7 +270,7 @@ Array::~Array() { }
 
 Array::Array(const Array& a) : _array(a._array) { }
 
-Array::Array(const Array&& a) : _array(move(a._array)) { }
+Array::Array(Array&& a) : _array(move(a._array)) { }
 
 Array& Array::operator=(const Array& a)
 {
@@ -272,7 +278,7 @@ Array& Array::operator=(const Array& a)
     return *this;
 }
 
-Array& Array::operator=(const Array&& a)
+Array& Array::operator=(Array&& a)
 {
     _array = move(a._array);
     return *this;
@@ -326,11 +332,11 @@ ostream& operator<<(ostream& os, const Value& v)
     {
         /** Base types */
         case INT:
-            os << (int)v;
+            os << (long long int)v;
             break;
         
         case FLOAT:
-            os << (float)v;
+            os << (long double)v;
             break;
         
         case BOOL:

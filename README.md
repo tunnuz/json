@@ -47,17 +47,22 @@ JSON\+\+ is a **self contained** Flex/Bison JSON parser for C\+\+11. It parses s
 
 ## How to build JSON++
 
-Make sure you have Flex and Bison installed, since the parser and lexer will be generated on the fly. Then just run
+The project includes a `CMakeLists.txt` files which allows you to generate build files for most build systems. Just run
+
+    cmake .    
+
+and then
 
     make
 
-to build the test file. If you need to use the parser in your code, use `make` to generate the
+The project generates 
 
-* json.tab.h,
-* json.tab.c, and
-* lex.yy.c
 
-files from `json.l` and `json.y`, then include everything in your build (together with `json.hh`, and `json_st.*`). Make sure to compile everything with a C++11 compliant compiler.
+* json.tab.hh,
+* json.tab.cc, and
+* lex.yy.cc
+
+files from `json.l` and `json.y`, then compiles them (and a few other files) into a `libjson` library, which is finally used to link the `test` executable. You can use the library in your projects, or use the Flex/Bison files straight away.
 
 ## Flex/Bison quirks when using C++ classes
 

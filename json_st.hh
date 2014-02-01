@@ -40,7 +40,7 @@ namespace JSON
         Object(const Object& o);
     
         /** Move constructor. */
-        Object(const Object&& o);
+        Object(Object&& o);
     
         /** Assignment operator. 
             @param o object to copy from
@@ -50,7 +50,7 @@ namespace JSON
         /** Move operator. 
             @param o object to copy from
         */
-        Object& operator=(const Object&& o);
+        Object& operator=(Object&& o);
     
         /** Destructor. */
         ~Object();
@@ -116,12 +116,12 @@ namespace JSON
         /** Copy constructor. 
             @param o the object to copy from
         */
-        Array(const Array&& a);
+        Array(Array&& a);
 
         /** Assignment operator. 
             @param a array to copy from
         */
-        Array& operator=(const Array&& a);
+        Array& operator=(Array&& a);
 
         /** Subscript operator, access an element by index. 
             @param i index of the element to access
@@ -171,10 +171,19 @@ namespace JSON
         Value(const Value& v);
     
         /** Constructor from int. */
+        Value(const long long int i);
+    
+        /** Constructor from int. */
+        Value(const long int i);
+    
+        /** Constructor from int. */
         Value(const int i);
     
         /** Constructor from float. */
-        Value(const float f);
+        Value(const long double f);
+        
+        /** Constructor from float. */
+        Value(const double f);
     
         /** Constructor from bool. */
         Value(const bool b);
@@ -192,16 +201,16 @@ namespace JSON
         Value(const Array& a);
     
         /** Move constructor. */
-        Value(const Value&& v);
+        Value(Value&& v);
     
         /** Move constructor from STD string  */
-        Value(const std::string&& s);
+        Value(std::string&& s);
     
         /** Move constructor from pointer to Object. */
-        Value(const Object&& o);
+        Value(Object&& o);
     
         /** Move constructor from pointer to Array. */
-        Value(const Array&& a);
+        Value(Array&& a);
     
         /** Type query. */
         ValueType type() const
@@ -213,13 +222,13 @@ namespace JSON
         Value& operator=(const Value& v);
     
         /** Move operator. */
-        Value& operator=(const Value&& v);
+        Value& operator=(Value&& v);
     
         /** Cast operator for float */
-        operator float() const { return float_v; }
+        operator long double() const { return float_v; }
     
         /** Cast operator for float */
-        operator int() const { return int_v; }
+        operator long long int() const { return int_v; }
     
         /** Cast operator for float */
         operator bool() const { return bool_v; }
@@ -236,15 +245,15 @@ namespace JSON
 
     protected:
     
-        float           float_v;
-        int             int_v;
-        bool            bool_v;
-        std::string     string_v;
+        long double         float_v;
+        long long int       int_v;
+        bool                bool_v;
+        std::string         string_v;
     
-        Object          object_v;
-        Array           array_v;
+        Object              object_v;
+        Array               array_v;
     
-        ValueType       type_t;
+        ValueType           type_t;
     };
     
     /** Indentation counter */

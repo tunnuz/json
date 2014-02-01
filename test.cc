@@ -16,6 +16,8 @@ int main(int argc, char** argv)
     Object obj;
     
     obj["foo"] = true;
+    obj["bar"] = 3LL;
+    obj["bar"] = 3L;
     obj["bar"] = 3;
     
     Object o;
@@ -28,8 +30,10 @@ int main(int argc, char** argv)
     a.push_back(true);
     a.push_back("asia");
     a.push_back("europa");
-    a.push_back(55);
-    
+    a.push_back(55LL);
+    a.push_back(3.12L);
+    a.push_back(3.12);
+        
     obj["beer"] = a;
 
     cerr << obj << endl;
