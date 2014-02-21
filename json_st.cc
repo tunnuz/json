@@ -212,28 +212,28 @@ Value& Value::operator=(Value&& v)
 Value& Value::operator[] (const string& key)
 {
     if (type() != OBJECT)
-        throw std::logic_error("Value not subscriptable");
+        throw std::logic_error("Value not an object");
     return object_v[key];
 }
 
 const Value& Value::operator[] (const string& key) const
 {
     if (type() != OBJECT)
-        throw std::logic_error("Value not subscriptable");
+        throw std::logic_error("Value not an object");
     return object_v[key];
 }
 
 Value& Value::operator[] (size_t i)
 {
     if (type() != ARRAY)
-        throw std::logic_error("Value not subscriptable");
+        throw std::logic_error("Value not an array");
     return array_v[i];
 }
 
 const Value& Value::operator[] (size_t i) const
 {
     if (type() != ARRAY)
-        throw std::logic_error("Value not subscriptable");
+        throw std::logic_error("Value not an array");
     return array_v[i];
 }
 

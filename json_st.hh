@@ -257,13 +257,13 @@ namespace JSON
         /** Cast operator for float */
         explicit operator long double() const { return float_v; }
     
-        /** Cast operator for float */
+        /** Cast operator for int */
         explicit operator long long int() const { return int_v; }
     
-        /** Cast operator for float */
+        /** Cast operator for bool */
         explicit operator bool() const { return bool_v; }
     
-        /** Cast operator for float */
+        /** Cast operator for string */
         explicit operator std::string () const { return string_v; }
     
         /** Cast operator for Object */
@@ -273,16 +273,16 @@ namespace JSON
         operator Array () const { return array_v; }
         
         /** Cast operator for float */
-        long double to_float() const { return float_v; }
+        long double as_float() const { return float_v; }
     
-        /** Cast operator for float */
-        long long int to_int() const { return int_v; }
+        /** Cast operator for int */
+        long long int as_int() const { return int_v; }
     
-        /** Cast operator for float */
-        bool to_bool() const { return bool_v; }
+        /** Cast operator for bool */
+        bool as_bool() const { return bool_v; }
     
-        /** Cast operator for float */
-        std::string to_string() const { return string_v; }
+        /** Cast operator for string */
+        std::string as_string() const { return string_v; }
 
 
     protected:
@@ -313,7 +313,5 @@ std::ostream& operator<<(std::ostream&, const JSON::Object&);
 
 /** Output operator for Arrays */
 std::ostream& operator<<(std::ostream&, const JSON::Array&);
-
-
 
 #endif
