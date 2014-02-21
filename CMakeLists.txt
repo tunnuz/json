@@ -4,27 +4,28 @@ project(json)
 set(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 
 find_package(BISON REQUIRED)
-set(BISON_OUTPUT json.tab.cc)
-set(BISON_DEFINES json.tab.hh)
+set(BISON_OUTPUT ${json_SOURCE_DIR}/json.tab.cc)
+set(BISON_DEFINES ${json_SOURCE_DIR}/json.tab.hh)
+include_directories(${json_SOURCE_DIR})
 if(BISON_FOUND)
 	add_custom_command(
 		OUTPUT ${BISON_OUTPUT}
 		COMMAND ${BISON_EXECUTABLE} 
 			--defines=${BISON_DEFINES}
 			--output=${BISON_OUTPUT}
-			json.y
+			${json_SOURCE_DIR}/json.y
 		COMMENT "Generating json.tab.hh, json.tab.cc (parser)"
 	)
 endif(BISON_FOUND)
 
 find_package(FLEX REQUIRED)
-set(FLEX_OUTPUT lex.yy.cc)
+set(FLEX_OUTPUT ${json_SOURCE_DIR}/lex.yy.cc)
 if(FLEX_FOUND)
 	add_custom_command(
 		OUTPUT ${FLEX_OUTPUT}
 		COMMAND ${FLEX_EXECUTABLE}
 			--outfile=${FLEX_OUTPUT}
-			json.l
+			${json_SOURCE_DIR}/json.l
 		COMMENT "Generating lex.yy.cc (lexer)"
 	)
 endif(FLEX_FOUND)

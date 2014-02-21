@@ -209,6 +209,35 @@ Value& Value::operator=(Value&& v)
 
 }
 
+Value& Value::operator[] (const string& key)
+{
+    if (type() != OBJECT)
+        throw std::logic_error("Value not subscriptable");
+    return object_v[key];
+}
+
+const Value& Value::operator[] (const string& key) const
+{
+    if (type() != OBJECT)
+        throw std::logic_error("Value not subscriptable");
+    return object_v[key];
+}
+
+Value& Value::operator[] (size_t i)
+{
+    if (type() != ARRAY)
+        throw std::logic_error("Value not subscriptable");
+    return array_v[i];
+}
+
+const Value& Value::operator[] (size_t i) const
+{
+    if (type() != ARRAY)
+        throw std::logic_error("Value not subscriptable");
+    return array_v[i];
+}
+
+
 Object::Object() { }
 
 Object::~Object() { }
@@ -232,6 +261,11 @@ Object& Object::operator=(Object&& o)
 Value& Object::operator[] (const string& key)
 {
     return _object[key];
+}
+
+const Value& Object::operator[] (const string& key) const
+{
+    return _object.at(key);
 }
 
 pair<map<string, Value>::iterator, bool> Object::insert(const pair<string, Value>& v)
@@ -287,7 +321,12 @@ Array& Array::operator=(Array&& a)
 
 Value& Array::operator[] (size_t i)
 {
-    return _array[i];
+    return _array.at(i);
+}
+
+const Value& Array::operator[] (size_t i) const
+{
+    return _array.at(i);
 }
 
 vector<Value>::const_iterator Array::begin() const
