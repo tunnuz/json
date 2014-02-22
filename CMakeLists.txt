@@ -6,6 +6,8 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 find_package(BISON REQUIRED)
 set(BISON_OUTPUT ${json_SOURCE_DIR}/json.tab.cc)
 set(BISON_DEFINES ${json_SOURCE_DIR}/json.tab.hh)
+include_directories(${json_SOURCE_DIR})
+
 if(BISON_FOUND)
 	add_custom_command(
 		OUTPUT ${BISON_OUTPUT}

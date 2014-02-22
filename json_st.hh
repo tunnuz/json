@@ -60,6 +60,11 @@ namespace JSON
         */
         Value& operator[] (const std::string& key);
 
+        /** Subscript operator, access an element by key.
+            @param key key of the object to access
+        */
+        const Value& operator[] (const std::string& key) const;
+
         /** Retrieves the starting iterator (const).
             @remark mainly for printing
         */
@@ -127,6 +132,11 @@ namespace JSON
             @param i index of the element to access
         */
         Value& operator[] (size_t i);
+        
+        /** Subscript operator, access an element by index. 
+            @param i index of the element to access
+        */
+        const Value& operator[] (size_t i) const;
 
         /** Retrieves the starting iterator (const).
             @remark mainly for printing
@@ -218,6 +228,26 @@ namespace JSON
             return type_t;
         }
     
+        /** Subscript operator, access an element by key.
+            @param key key of the object to access
+        */
+        Value& operator[] (const std::string& key);
+
+        /** Subscript operator, access an element by key.
+            @param key key of the object to access
+        */
+        const Value& operator[] (const std::string& key) const;
+        
+        /** Subscript operator, access an element by index. 
+            @param i index of the element to access
+        */
+        Value& operator[] (size_t i);
+    
+        /** Subscript operator, access an element by index. 
+            @param i index of the element to access
+        */
+        const Value& operator[] (size_t i) const;
+    
         /** Assignment operator. */
         Value& operator=(const Value& v);
     
@@ -225,22 +255,34 @@ namespace JSON
         Value& operator=(Value&& v);
     
         /** Cast operator for float */
-        operator long double() const { return float_v; }
+        explicit operator long double() const { return float_v; }
     
-        /** Cast operator for float */
-        operator long long int() const { return int_v; }
+        /** Cast operator for int */
+        explicit operator long long int() const { return int_v; }
     
-        /** Cast operator for float */
-        operator bool() const { return bool_v; }
+        /** Cast operator for bool */
+        explicit operator bool() const { return bool_v; }
     
-        /** Cast operator for float */
-        operator std::string () const { return string_v; }
+        /** Cast operator for string */
+        explicit operator std::string () const { return string_v; }
     
         /** Cast operator for Object */
         operator Object () const { return object_v; }
     
         /** Cast operator for Object */
         operator Array () const { return array_v; }
+        
+        /** Cast operator for float */
+        long double as_float() const { return float_v; }
+    
+        /** Cast operator for int */
+        long long int as_int() const { return int_v; }
+    
+        /** Cast operator for bool */
+        bool as_bool() const { return bool_v; }
+    
+        /** Cast operator for string */
+        std::string as_string() const { return string_v; }
 
 
     protected:
@@ -271,7 +313,5 @@ std::ostream& operator<<(std::ostream&, const JSON::Object&);
 
 /** Output operator for Arrays */
 std::ostream& operator<<(std::ostream&, const JSON::Array&);
-
-
 
 #endif
