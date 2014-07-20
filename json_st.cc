@@ -1,5 +1,6 @@
 #include "json_st.hh"
 #include <stdexcept>
+#include <string>
 
 using namespace std;
 using namespace JSON;

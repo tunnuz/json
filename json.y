@@ -12,9 +12,10 @@
         int yylex();
     } 
         
-    void load_string(const char *);
+    void * load_string(const char *);
     void load_file(FILE*);
     JSON::Value* parsd = nullptr;
+    void clean_up(void * buffer_state);
 %}
 
 %code requires { #include "json_st.hh" }
@@ -81,6 +82,11 @@ string : DOUBLE_QUOTED_STRING {
         // Trim string
         std::string s($1);
         s = s.substr(1, s.length()-2);
+        while(true) {
+            auto n = s.find("\\\""); // searches \"
+            if (n == std::string::npos) break;
+            s.replace(n, 2, "\""); // replaces with "
+        }
         char* t = new char[s.length()+1];
         strcpy(t, s.c_str());
         $$ = t;
@@ -124,44 +130,71 @@ list: /* empty */ { $$ = new JSON::Array(); }
     
 %%
 
+namespace {
+
+    class FileHandle {
+    public:
+        explicit FileHandle(const char* filename)
+            :
+                m_handle { fopen(filename, "r") }
+        {
+            if (not m_handle) {
+                throw std::runtime_error("Impossible to open file.");
+            }
+        }
+
+        ~FileHandle()
+        {
+            if (m_handle) fclose(m_handle);
+        }
+
+        operator FILE* () { return m_handle; }
+
+        FileHandle(const FileHandle&) = delete;
+        FileHandle& operator=(const FileHandle&) = delete;
+
+    private:
+
+        FILE* m_handle;
+
+    };
+
+}
+
 JSON::Value parse_file(const char* filename)
 {    
-    FILE* fh = fopen(filename, "r");
+    FileHandle fh { filename };
     JSON::Value v;
     
-    if (fh)
-    {
-        load_file(fh);
-        int status = yyparse();
-        
-        if (status)
-            throw std::runtime_error("Error parsing file: JSON syntax.");
-        else
-            v = *parsd;
-        
-        delete parsd;
-    } 
+    load_file(fh);
+    int status = yyparse();
+    
+    if (status)
+        throw std::runtime_error("Error parsing file: JSON syntax.");
     else
-        throw std::runtime_error("Impossible to open file.");
+        v = *parsd;
+    
+    delete parsd;
 
     return v;
 }
 
 JSON::Value parse_string(const std::string& s)
 {
-    load_string(s.c_str());
+    void * buffer_state = load_string(s.c_str());
     
     int status = yyparse();
     
     if (status)
     {
-        throw std::runtime_error("Error parsing file: JSON syntax.");
+        throw std::runtime_error("Error parsing string: JSON syntax.");
         delete parsd;
     }
     else
     {
         JSON::Value v = *parsd;
         delete parsd;
+        if (buffer_state) clean_up(buffer_state);
         return v;    
     }
 }
