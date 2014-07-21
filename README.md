@@ -2,6 +2,13 @@
 
 JSON\+\+ is a **self contained** Flex/Bison JSON parser for C\+\+11. It parses strings and files in JSON format, and builds an in-memory tree representing the JSON structure. JSON objects are mapped to `std::map`s, arrays to `std::vector`s, JSON native types are mapped onto C++ native types. The library also includes printing on streams. Classes exploit move semantics to avoid copying parsed structures around. It doesn't require any additional library (not even `libfl`).
 
+## Updates 
+
+*July 20, 2014* - In the past few months I have merged various pull requests, which I considered good additions to the code (e.g., someone fixed memory leaks, someone improved the CMake build system, someone started to add support for unicode escaped characters). These were all very good contributions, and I'd like to thank anyone that has filed a pull request for JSON++. However, I have sometimes overlooked the code that I was merging and, sometimes, pull requests with early code were merged in the main distribution. For this reason, a few days ago I have rolled back to a previous version of the code, from the end of June. This is my first open source projects that gains a bit of traction (the repository has about 1500 visits per month), and I'll be more careful in merging pull requests from now on.
+
+## Git repository
+
+A version of this repository (regularly mirrored) is available on [GitHub](https://github.com/tunnuz/json).
 
 ## Contributors
 
