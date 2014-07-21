@@ -13,13 +13,9 @@
     #include "json.tab.hh"
 %}
 
-ESCAPED_THING                           \\["]
-CHAR                                    [^"\\]|{ESCAPED_THING}
-DOUBLE_QUOTED_LITERAL                   \"{CHAR}*\"
-
 %%
 
-{DOUBLE_QUOTED_LITERAL}                 { yylval.string_v = yytext; return DOUBLE_QUOTED_STRING; }
+\"[^\"]*\"                              { yylval.string_v = yytext; return DOUBLE_QUOTED_STRING; }
 \'[^\']*\'                              { yylval.string_v = yytext; return SINGLE_QUOTED_STRING; }
 "["                                     { return SQUARE_BRACKET_L; }
 "]"                                     { return SQUARE_BRACKET_R; }
