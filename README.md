@@ -59,7 +59,7 @@ Thanks for your effort fellas.
     
         obj["test"] = a;
         
-		cout << o << endl;
+		cout << obj << endl;
         
         return 0;
 	}
