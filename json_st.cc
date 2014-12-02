@@ -407,7 +407,7 @@ ostream& operator<<(ostream& os, const Value& v)
 
 ostream& operator<<(ostream& os, const Object& o)
 {    
-    os << "{" << endl;
+    os << "{\n";
     ind++;
     for (auto e = o.begin(); e != o.end();)
     {
@@ -415,7 +415,7 @@ ostream& operator<<(ostream& os, const Object& o)
         os << '"' << e->first << '"' << ": " << e->second;
         if (++e != o.end())
             os << ",";
-        os << endl;
+        os << "\n";
     }    
     ind--;
     JSON::indent(os);
@@ -426,7 +426,7 @@ ostream& operator<<(ostream& os, const Object& o)
 
 ostream& operator<<(ostream& os, const Array& a)
 {
-    os << "[" << endl;
+    os << "[\n";
     ind++;
     for (auto e = a.begin(); e != a.end();)
     {
@@ -434,7 +434,7 @@ ostream& operator<<(ostream& os, const Array& a)
         os << (*e);
         if (++e != a.end())
             os << ",";
-        os << endl;
+        os << "\n";
     }    
     ind--;
     JSON::indent(os);
