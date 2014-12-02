@@ -102,14 +102,14 @@ namespace JSON
     {
     public:
 
-        /** Constructor. */
+        /** Default Constructor. */
         Array();
     
         /** Destructor. */
         ~Array();
     
         /** Copy constructor. 
-            @param o the object to copy from
+            @param a the array to copy from
         */
         Array(const Array& a);
     
@@ -118,13 +118,13 @@ namespace JSON
         */
         Array& operator=(const Array& a);
     
-        /** Copy constructor. 
-            @param o the object to copy from
+        /** Move constructor. 
+            @param a the array to move from
         */
         Array(Array&& a);
 
-        /** Assignment operator. 
-            @param a array to copy from
+        /** Move assignment operator. 
+            @param a array to move from
         */
         Array& operator=(Array&& a);
 

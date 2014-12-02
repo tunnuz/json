@@ -13,9 +13,15 @@
     #include "json.tab.hh"
 %}
 
+UnicodeEscapeSequence                   u[0-9A-Fa-f]{4}
+JSONEscapeCharacter                     ["\\/bfnrt]
+JSONEscapeSequence                      {JSONEscapeCharacter}|{UnicodeEscapeSequence}
+JSONStringCharacter                     [^"\\]|\\{JSONEscapeSequence}
+JSONString                              \"{JSONStringCharacter}*\"
+
 %%
 
-\"[^\"]*\"                              { yylval.string_v = yytext; return DOUBLE_QUOTED_STRING; }
+{JSONString}                            { yylval.string_v = yytext; return DOUBLE_QUOTED_STRING; }
 \'[^\']*\'                              { yylval.string_v = yytext; return SINGLE_QUOTED_STRING; }
 "["                                     { return SQUARE_BRACKET_L; }
 "]"                                     { return SQUARE_BRACKET_R; }

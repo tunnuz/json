@@ -4,6 +4,7 @@
     #include <cstring>
     #include <stdio.h>
     #include <stdexcept>
+    #include "unescape.hh"
     #include "json_st.hh"
     
     extern "C" 
@@ -11,6 +12,9 @@
         void yyerror(const char *);
         int yylex();
     } 
+        
+    using yy_size_t = size_t;
+    extern yy_size_t yyleng;
         
     void * load_string(const char *);
     void load_file(FILE*);
@@ -80,13 +84,10 @@ value : NUMBER_I { $$ = new JSON::Value($1); }
 // String rule
 string : DOUBLE_QUOTED_STRING {
         // Trim string
-        std::string s($1);
-        s = s.substr(1, s.length()-2);
-        while(true) {
-            auto n = s.find("\\\""); // searches \"
-            if (n == std::string::npos) break;
-            s.replace(n, 2, "\""); // replaces with "
-        }
+        std::string s { $1 + 1, yyleng - 2 };
+
+        JSON::HELPER::unescape(s);
+
         char* t = new char[s.length()+1];
         strcpy(t, s.c_str());
         $$ = t;
