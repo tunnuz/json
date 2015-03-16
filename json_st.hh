@@ -2,6 +2,7 @@
 #define JSON_ST_HH
 
 #include <iostream>
+#include <string>
 #include <map>
 #include <vector>
 #include <stack>
@@ -41,7 +42,13 @@ namespace JSON
     
         /** Move constructor. */
         Object(Object&& o);
-    
+
+        /** Convert Type to string. */
+        operator std::string()
+        {
+            return to_string();
+        }
+
         /** Assignment operator. 
             @param o object to copy from
         */
@@ -94,6 +101,8 @@ namespace JSON
 
         /** Inner container. */
         std::map<std::string, Value> _object;
+    private:
+        std::string to_string();
     };
 
     /** A JSON array, i.e., an indexed container of elements. It contains
@@ -127,6 +136,12 @@ namespace JSON
             @param a array to move from
         */
         Array& operator=(Array&& a);
+
+        /** Convert Type to string. */
+        operator std::string()
+        {
+            return to_string();
+        }
 
         /** Subscript operator, access an element by index. 
             @param i index of the element to access
@@ -167,6 +182,8 @@ namespace JSON
         /** Inner container. */
         std::vector<Value> _array;
 
+    private:
+        std::string to_string();
     };
 
     /** A JSON value. Can have either type in ValueTypes. */

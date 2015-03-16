@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "json.hh"
 
 using namespace std;
@@ -9,7 +10,7 @@ int main(int argc, char** argv)
     // Load JSON file
     
     Value v = parse_file("tests/comp.json");    
-    cerr << v << endl;
+    cerr << v["type"] << endl;
     cerr << "---" << endl;
     
     // Build object programmatically
@@ -37,6 +38,10 @@ int main(int argc, char** argv)
     obj["beer"] = a;
 
     cerr << obj << endl;
+
+    std::string s = obj;
+
+    cerr << s << endl;
     
     return 0;
 }

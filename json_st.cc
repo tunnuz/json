@@ -1,6 +1,9 @@
 #include "json_st.hh"
 #include <stdexcept>
 #include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 using namespace JSON;
@@ -300,6 +303,65 @@ size_t Object::size() const
     return _object.size();
 }
 
+std::string Object::to_string()
+{
+    std::string json_str;
+    static char buf[128] = {'\0'};
+    json_str = "{";
+    for (auto e = this->begin(); e != this->end();)
+    {
+        json_str += '"';
+        json_str += e->first;
+        json_str += '"';
+        json_str += ":";
+        switch(e->second.type())
+        {
+            /** Base types */
+            case INT:
+                std::memset(buf,0,sizeof(buf));
+                std::snprintf(buf,sizeof(buf),"%lld",(long long int)e->second);
+                json_str += buf;
+                break;
+            case FLOAT:
+                std::memset(buf,0,sizeof(buf));
+                std::snprintf(buf,sizeof(buf),"%Lf",(long double)e->second);
+                json_str += buf;
+                break;
+            case BOOL:
+                if((bool)e->second) {
+                    json_str += "true";
+                } else {
+                    json_str += "false";
+                }
+                break;
+            case NIL:
+                break;
+            case STRING:
+                json_str += '"';
+                json_str += (std::string)e->second;
+                json_str += '"';
+                break;
+             /** Compound types */
+            case ARRAY:
+            {
+                Array a = e->second;
+                json_str += (std::string)(a);
+            }
+                break;
+            case OBJECT:
+            {
+                Object o = e->second;
+                json_str += (std::string)(o);
+            }
+                break;
+        }
+        if (++e != this->end())
+            json_str += ",";
+    }    
+    json_str += "}";
+    return json_str;
+}
+
 Array::Array() { }
 
 Array::~Array() { }
@@ -359,6 +421,61 @@ size_t Array::size() const
 void Array::push_back(const Value& v)
 {
     _array.push_back(v);
+}
+
+std::string Array::to_string()
+{
+    std::string json_str;
+    static char buf[128] = {'\0'};
+    json_str += "[";
+    for (auto e = this->begin(); e != this->end();)
+    {
+        switch(e->type())
+        {
+            /** Base types */
+            case INT:
+                std::memset(buf,0,sizeof(buf));
+                std::snprintf(buf,sizeof(buf),"%lld",(long long int)(*e));
+                json_str += buf;
+                break;
+            case FLOAT:
+                std::memset(buf,0,sizeof(buf));
+                std::snprintf(buf,sizeof(buf),"%Lf",(long double)(*e));
+                json_str += buf;
+                break;
+            case BOOL:
+                if((bool)(*e)) {
+                    json_str += "true";
+                } else {
+                    json_str += "false";
+                }
+                break;
+            case NIL:
+                break;
+            case STRING:
+                json_str += '"';
+                json_str += (std::string)(*e);
+                json_str += '"';
+                break;
+             /** Compound types */
+            case ARRAY:
+            {
+                Array a = *e;
+                json_str += (std::string)(a);
+            }
+                break;
+            case OBJECT:
+            {
+                Object o = *e;
+                json_str += (std::string)(o);
+            }
+                break;
+        }
+        if (++e != this->end())
+            json_str += ",";
+    }    
+    json_str += "]";
+    return json_str;
 }
 
 void JSON::indent(ostream& os)
