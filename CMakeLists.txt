@@ -25,6 +25,8 @@ else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
+add_definitions(-Werror -Wall -Wextra -pedantic)
+
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER)
 if(BUILD_TYPE_LOWER STREQUAL "coverage")
 	# workaround necessary because CHECK_CXX_COMPILER_FLAG not only compiles, but also links,

@@ -4,7 +4,7 @@
 using namespace std;
 using namespace JSON;
 
-int main(int argc, char** argv)
+int main()
 {
     // Load JSON file
     

@@ -1,4 +1,4 @@
-%option noyywrap yylineno nodefault
+%option noyywrap yylineno nodefault nounput
 %{
     // Provided externally
     extern "C" 
