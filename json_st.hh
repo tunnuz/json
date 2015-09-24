@@ -298,11 +298,9 @@ namespace JSON
         ValueType           type_t;
     };
     
-    /** Indentation counter */
-    static unsigned int ind;
 
     /** Print correct indentation before printing anything */
-    static void indent(std::ostream& os = std::cout);
+    void indent(std::ostream& os = std::cout);
 }
 
 /** Output operator for Values */

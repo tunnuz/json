@@ -42,15 +42,15 @@ namespace JSON {
             }
 
             /*  (3)  */
-            if (code_point <= 0xFFFF) {
-                const unsigned char first_byte = 0xE0 + ((code_point & 0xF000 ) >> 12);
-                const unsigned char second_byte = 0x80 + ((code_point & 0x0FC0 ) >> 6);
-                const unsigned char third_byte = 0x80 + (code_point & 0x003F);
-                return {
-                        static_cast<char>(first_byte),
-                        static_cast<char>(second_byte),
-                        static_cast<char>(third_byte) };
-            }
+            /* code_point <= 0xFFFF */
+            const unsigned char first_byte = 0xE0 + ((code_point & 0xF000 ) >> 12);
+            const unsigned char second_byte = 0x80 + ((code_point & 0x0FC0 ) >> 6);
+            const unsigned char third_byte = 0x80 + (code_point & 0x003F);
+            return {
+                    static_cast<char>(first_byte),
+                    static_cast<char>(second_byte),
+                    static_cast<char>(third_byte) };
+            
 
             return { };  // can never happen
         }

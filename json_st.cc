@@ -5,6 +5,9 @@
 using namespace std;
 using namespace JSON;
 
+/** Indentation counter */
+static unsigned int ind;
+
 Value::Value() : type_t(NIL) { }
 
 Value::Value(const long long int i) : int_v(i), type_t(INT) { }
