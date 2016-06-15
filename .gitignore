@@ -1,3 +1,9 @@
 .DS_Store
 .hg
+.*~
 build
+bin
+json.tab.hh
+json.tab.cc
+lex.yy.cc
+lib
