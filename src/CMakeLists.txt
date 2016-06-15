@@ -17,7 +17,7 @@ endif(BISON_FOUND)
 
 find_package(FLEX 2.5 REQUIRED)
 if(FLEX_FOUND)
-	set(FLEX_OUTPUT ${PROJECT_SOURCE_DIR}/src/lex.yy.cc)
+	set(FLEX_OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/lex.yy.cc)
 	add_custom_command(
 		OUTPUT ${FLEX_OUTPUT}
 		COMMAND ${FLEX_EXECUTABLE}
