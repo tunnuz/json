@@ -1,16 +1,16 @@
 %option noyywrap yylineno nodefault nounput
 %{
     // Provided externally
-    extern "C" 
+    extern "C"
     {
         int yylex();
     }
 
 	// Needed for std::stoll and std::stold
 	#include <string>
-    
+
     // Needed for the tokens
-    #include "json.tab.hh"
+    #include "json/json.tab.hh"
 %}
 
 UnicodeEscapeSequence                   u[0-9A-Fa-f]{4}

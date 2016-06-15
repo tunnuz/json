@@ -1,4 +1,4 @@
-#include "json_st.hh"
+#include "json/json_st.hh"
 #include <stdexcept>
 #include <string>
 
@@ -37,7 +37,7 @@ Value::Value(Object&& o) : object_v(move(o)), type_t(OBJECT) { }
 Value::Value(Array&& o) : array_v(move(o)), type_t(ARRAY) { }
 
 Value::Value(const Value& v)
-{ 
+{
     switch(v.type())
     {
         /** Base types */
@@ -45,42 +45,42 @@ Value::Value(const Value& v)
             int_v = v.int_v;
             type_t = INT;
             break;
-        
+
         case FLOAT:
             float_v = v.float_v;
             type_t = FLOAT;
             break;
-        
+
         case BOOL:
             bool_v = v.bool_v;
             type_t = BOOL;
             break;
-        
+
         case NIL:
             type_t = NIL;
             break;
-        
+
         case STRING:
             string_v = v.string_v;
             type_t = STRING;
             break;
-        
+
         /** Compound types */
             case ARRAY:
             array_v = v.array_v;
             type_t = ARRAY;
             break;
-        
+
         case OBJECT:
             object_v = v.object_v;
             type_t = OBJECT;
             break;
-        
+
     }
 }
 
 Value::Value(Value&& v)
-{ 
+{
     switch(v.type())
     {
         /** Base types */
@@ -88,37 +88,37 @@ Value::Value(Value&& v)
             int_v = move(v.int_v);
             type_t = INT;
             break;
-        
+
         case FLOAT:
             float_v = move(v.float_v);
             type_t = FLOAT;
             break;
-        
+
         case BOOL:
             bool_v = move(v.bool_v);
             type_t = BOOL;
             break;
-        
+
         case NIL:
             type_t = NIL;
             break;
-        
+
         case STRING:
             string_v = move(v.string_v);
             type_t = STRING;
             break;
-        
+
         /** Compound types */
             case ARRAY:
             array_v = move(v.array_v);
             type_t = ARRAY;
             break;
-        
+
         case OBJECT:
             object_v = move(v.object_v);
             type_t = OBJECT;
             break;
-        
+
     }
 }
 
@@ -131,39 +131,39 @@ Value& Value::operator=(const Value& v)
             int_v = v.int_v;
             type_t = INT;
             break;
-        
+
         case FLOAT:
             float_v = v.float_v;
             type_t = FLOAT;
             break;
-        
+
         case BOOL:
             bool_v = v.bool_v;
             type_t = BOOL;
             break;
-        
+
         case NIL:
             type_t = NIL;
             break;
-        
+
         case STRING:
             string_v = v.string_v;
             type_t = STRING;
             break;
-        
+
         /** Compound types */
             case ARRAY:
             array_v = v.array_v;
             type_t = ARRAY;
             break;
-        
+
         case OBJECT:
             object_v = v.object_v;
             type_t = OBJECT;
             break;
-        
+
     }
-    
+
     return *this;
 
 }
@@ -177,39 +177,39 @@ Value& Value::operator=(Value&& v)
             int_v = move(v.int_v);
             type_t = INT;
             break;
-        
+
         case FLOAT:
             float_v = move(v.float_v);
             type_t = FLOAT;
             break;
-        
+
         case BOOL:
             bool_v = move(v.bool_v);
             type_t = BOOL;
             break;
-        
+
         case NIL:
             type_t = NIL;
             break;
-        
+
         case STRING:
             string_v = move(v.string_v);
             type_t = STRING;
             break;
-        
+
         /** Compound types */
             case ARRAY:
             array_v = move(v.array_v);
             type_t = ARRAY;
             break;
-        
+
         case OBJECT:
             object_v = move(v.object_v);
             type_t = OBJECT;
             break;
-        
+
     }
-    
+
     return *this;
 
 }
@@ -371,45 +371,45 @@ void JSON::indent(ostream& os)
 }
 
 ostream& operator<<(ostream& os, const Value& v)
-{    
+{
     switch(v.type())
     {
         /** Base types */
         case INT:
             os << (long long int)v;
             break;
-        
+
         case FLOAT:
             os << (long double)v;
             break;
-        
+
         case BOOL:
             os << ((bool)v ? "true" : "false");
             break;
-        
+
         case NIL:
             os << "null";
             break;
-        
+
         case STRING:
-            os << '"' << (string)v << '"';                
+            os << '"' << (string)v << '"';
             break;
-        
+
         /** Compound types */
         case ARRAY:
-            os << (Array)v;                
+            os << (Array)v;
             break;
-        
+
         case OBJECT:
-            os << (Object)v;                
+            os << (Object)v;
             break;
-        
+
     }
     return os;
 }
 
 ostream& operator<<(ostream& os, const Object& o)
-{    
+{
     os << "{\n";
     ind++;
     for (auto e = o.begin(); e != o.end();)
@@ -419,11 +419,11 @@ ostream& operator<<(ostream& os, const Object& o)
         if (++e != o.end())
             os << ",";
         os << "\n";
-    }    
+    }
     ind--;
     JSON::indent(os);
     os << "}";
-    
+
     return os;
 }
 
@@ -438,10 +438,10 @@ ostream& operator<<(ostream& os, const Array& a)
         if (++e != a.end())
             os << ",";
         os << "\n";
-    }    
+    }
     ind--;
     JSON::indent(os);
     os << "]";
-    
+
     return os;
 }
